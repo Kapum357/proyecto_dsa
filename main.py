@@ -3,6 +3,8 @@ from tkinter import messagebox, simpledialog
 from library import Library
 from book import Book
 import logging
+import matplotlib.pyplot as plt
+import math
 
 logging.basicConfig(filename='registro_sistema.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -43,6 +45,10 @@ class LibraryGUI:
         # Botón para mostrar todos los libros
         show_books_button = tk.Button(action_frame, text="Mostrar Libros", command=self.show_books)
         show_books_button.pack(side=tk.LEFT, padx=5)
+
+        # Botón para mostrar el grafo de todos los libros
+        graph_button = tk.Button(action_frame, text="Mostrar Grafo", command=self.show_graph)
+        graph_button.pack(side=tk.LEFT, padx=5)
 
         # Área de texto para mostrar resultados
         self.results_text = tk.Text(self.root, width=80, height=20)
@@ -123,6 +129,25 @@ class LibraryGUI:
 
     def display_book(self, book):
         self.results_text.insert(tk.END, str(book) + "\n\n")
+
+    def show_graph(self):
+        books = self.library.get_all_books()
+        titles = [book.title for book in books]
+        num_books = len(titles)
+        angles = [2 * math.pi * i / num_books for i in range(num_books)]
+
+        x = [5 * math.cos(angle) for angle in angles]
+        y = [5 * math.sin(angle) for angle in angles]
+
+        plt.figure(figsize=(8, 8))
+        plt.scatter(x, y)
+
+        for i, title in enumerate(titles):
+            plt.text(x[i], y[i], title, fontsize=9, ha='right')
+
+        plt.title("Grafo de Todos los Libros")
+        plt.axis('off')
+        plt.show()
 
 class LoginGUI:
     def __init__(self, root, on_login_success):

@@ -1,18 +1,50 @@
+import logging
 from nodes import HashTable
 from sort import quick_sort
-import logging
+from graph import Graph
+from book import Book
 
 class Library:
     def __init__(self):
         self.books = []
         self.hash_table_genres = HashTable()
         self.hash_table_years = HashTable()
-        logging.info('Sistema de Biblioteca iniciado.')
+        self.graph = Graph()
+        self.cargar_libros('books.txt')
+        logging.info("Biblioteca inicializada y libros cargados.")
+
+    def cargar_libros(self, archivo):
+        try:
+            with open(archivo, 'r', encoding='utf-8') as file:
+                content = file.read()
+            entries = content.split('---')
+            for entry in entries:
+                if entry.strip():
+                    lines = entry.strip().split('\n')
+                    book_data = {}
+                    for line in lines:
+                        key, value = line.split(':', 1)
+                        book_data[key.strip().lower()] = value.strip()
+                    new_book = Book(
+                        cover=book_data.get('cover', ''),
+                        title=book_data.get('title', ''),
+                        author=book_data.get('author', ''),
+                        genre=book_data.get('genre', ''),
+                        preview=book_data.get('preview', ''),
+                        year=int(book_data.get('year', 0))
+                    )
+                    self.insertar_libro(new_book)
+            logging.info(f"Todos los libros han sido cargados desde {archivo}.")
+        except FileNotFoundError:
+            logging.error(f"El archivo {archivo} no fue encontrado.")
+        except Exception as e:
+            logging.error(f"Error al cargar libros: {e}")
 
     def insertar_libro(self, book):
         self.books.append(book)
         self.hash_table_genres.insert(book.genre.lower(), book)
         self.hash_table_years.insert(book.year, book)
+        self.graph.add_book(book)
         logging.info(f"Libro '{book.title}' insertado en la biblioteca.")
 
     def buscar_por_titulo(self, titulo):

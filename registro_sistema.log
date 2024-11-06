@@ -10,3 +10,19 @@
 2024-11-05 20:17:42,745 - INFO - Sistema de Biblioteca iniciado.
 2024-11-05 20:17:42,827 - INFO - Interfaz gráfica iniciada.
 2024-11-05 20:29:14,450 - INFO - Sistema de Biblioteca iniciado.
+2024-11-05 20:29:21,406 - INFO - Usuario 'admin' inició sesión exitosamente.
+2024-11-05 20:29:21,469 - INFO - Interfaz gráfica iniciada.
+2024-11-06 16:12:52,360 - INFO - Sistema de Biblioteca iniciado.
+2024-11-06 16:13:00,511 - INFO - Usuario 'admin' inició sesión exitosamente.
+2024-11-06 16:13:00,647 - INFO - Interfaz gráfica iniciada.
+2024-11-06 16:22:30,821 - INFO - Sistema de Biblioteca iniciado.
+2024-11-06 16:22:38,122 - INFO - Usuario 'admin' inició sesión exitosamente.
+2024-11-06 16:22:38,234 - INFO - Interfaz gráfica iniciada.
+2024-11-06 16:35:01,598 - INFO - Sistema de Biblioteca iniciado.
+2024-11-06 16:41:35,735 - INFO - Usuario 'admin' inició sesión exitosamente.
+2024-11-06 16:41:35,868 - INFO - Interfaz gráfica iniciada.
+2024-11-06 16:47:45,470 - INFO - Sistema de Biblioteca iniciado.
+2024-11-06 17:09:19,453 - ERROR - El archivo books.txt no fue encontrado.
+2024-11-06 17:09:19,453 - INFO - Biblioteca inicializada y libros cargados.
+2024-11-06 17:09:25,545 - INFO - Usuario 'admin' inició sesión exitosamente.
+2024-11-06 17:09:25,685 - INFO - Interfaz gráfica iniciada.
