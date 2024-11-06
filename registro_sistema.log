@@ -1,1 +1,12 @@
 
+2024-11-05 20:06:58,515 - INFO - Sistema de Biblioteca iniciado.
+2024-11-05 20:07:07,484 - INFO - Usuario 'admin' inició sesión exitosamente.
+2024-11-05 20:07:07,575 - INFO - Interfaz gráfica iniciada.
+2024-11-05 20:07:12,837 - INFO - Búsqueda por título 'hola' realizada. No encontrado.
+2024-11-05 20:07:12,837 - INFO - Búsqueda por autor 'hola' realizada. No encontrado.
+2024-11-05 20:07:21,291 - INFO - Búsqueda por título 'hola' realizada. No encontrado.
+2024-11-05 20:07:21,291 - INFO - Búsqueda por autor 'hola' realizada. No encontrado.
+2024-11-05 20:07:42,290 - WARNING - Intento de agregar libro con información incompleta.
+2024-11-05 20:17:42,745 - INFO - Sistema de Biblioteca iniciado.
+2024-11-05 20:17:42,827 - INFO - Interfaz gráfica iniciada.
+2024-11-05 20:29:14,450 - INFO - Sistema de Biblioteca iniciado.

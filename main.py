@@ -20,112 +20,109 @@ class LibraryGUI:
         self.root.mainloop()
 
     def create_widgets(self):
+        # Marco para la barra de búsqueda
+        search_frame = tk.Frame(self.root)
+        search_frame.pack(pady=10)
+
+        # Campo de entrada para la búsqueda
+        self.search_entry = tk.Entry(search_frame, width=50)
+        self.search_entry.pack(side=tk.LEFT, padx=10)
+
+        # Botón para realizar la búsqueda
+        search_button = tk.Button(search_frame, text="Buscar", command=self.search_books)
+        search_button.pack(side=tk.LEFT)
+
         # Marco para las acciones
         action_frame = tk.Frame(self.root)
         action_frame.pack(pady=10)
 
         # Botón para agregar un libro
         add_book_button = tk.Button(action_frame, text="Agregar Libro", command=self.add_book)
-        add_book_button.grid(row=0, column=0, padx=5)
+        add_book_button.pack(side=tk.LEFT, padx=5)
 
-        # Botón para buscar libros
-        search_button = tk.Button(action_frame, text="Buscar Libros", command=self.search_books)
-        search_button.grid(row=0, column=1, padx=5)
-
-        # Botón para ordenar libros
-        sort_button = tk.Button(action_frame, text="Ordenar Libros", command=self.sort_books)
-        sort_button.grid(row=0, column=2, padx=5)
+        # Botón para mostrar todos los libros
+        show_books_button = tk.Button(action_frame, text="Mostrar Libros", command=self.show_books)
+        show_books_button.pack(side=tk.LEFT, padx=5)
 
         # Área de texto para mostrar resultados
-        self.result_text = tk.Text(self.root, height=20, width=80)
-        self.result_text.pack(pady=10)
-
-    def add_book(self):
-        # Solicitar información del libro
-        title = simpledialog.askstring("Título", "Ingrese el título del libro:")
-        author = simpledialog.askstring("Autor", "Ingrese el autor del libro:")
-        genre = simpledialog.askstring("Género", "Ingrese el género del libro:")
-        year = simpledialog.askinteger("Año", "Ingrese el año de publicación:")
-        cover = simpledialog.askstring("Portada", "Ingrese la portada del libro:")
-        preview = simpledialog.askstring("Vista Previa", "Ingrese la vista previa del libro:")
-
-        # Crear y agregar el libro
-        if title and author and genre and year:
-            book = Book(cover, title, author, genre, preview, year)
-            self.library.insertar_libro(book)
-            messagebox.showinfo("Éxito", f"Libro '{title}' agregado.")
-            logging.info(f"Libro '{title}' agregado a través de la interfaz gráfica.")
-        else:
-            messagebox.showwarning("Información incompleta", "Todos los campos son obligatorios.")
-            logging.warning("Intento de agregar libro con información incompleta.")
+        self.results_text = tk.Text(self.root, width=80, height=20)
+        self.results_text.pack(pady=10)
 
     def search_books(self):
-        # Ventana para seleccionar el tipo de búsqueda
-        search_window = tk.Toplevel(self.root)
-        search_window.title("Buscar Libros")
+        query = self.search_entry.get().strip()
+        if not query:
+            messagebox.showwarning("Entrada Vacía", "Por favor, ingresa un término de búsqueda.")
+            return
 
-        tk.Label(search_window, text="Seleccione el criterio de búsqueda:").pack(pady=5)
+        # Buscar por título
+        book = self.library.buscar_por_titulo(query)
+        if book:
+            self.display_book(book)
+            logging.info(f"Libro encontrado: {book.title}")
+            return
 
-        # Botones para diferentes tipos de búsqueda
-        tk.Button(search_window, text="Por Título", command=lambda: self.perform_search("título")).pack(pady=5)
-        tk.Button(search_window, text="Por Autor", command=lambda: self.perform_search("autor")).pack(pady=5)
-        tk.Button(search_window, text="Por Género", command=lambda: self.perform_search("género")).pack(pady=5)
-        tk.Button(search_window, text="Por Año", command=lambda: self.perform_search("año")).pack(pady=5)
+        # Buscar por autor
+        book = self.library.buscar_por_autor(query)
+        if book:
+            self.display_book(book)
+            logging.info(f"Libro encontrado: {book.title}")
+            return
 
-    def perform_search(self, criterion):
-        query = simpledialog.askstring("Buscar", f"Ingrese el {criterion} a buscar:")
-        if query:
-            if criterion == "título":
-                results = self.library.buscar_por_titulo(query)
-            elif criterion == "autor":
-                results = self.library.buscar_por_autor(query)
-            elif criterion == "género":
-                results = self.library.buscar_por_genero(query)
-            elif criterion == "año":
-                try:
-                    year = int(query)
-                    results = self.library.buscar_por_año(year)
-                except ValueError:
-                    messagebox.showerror("Error", "El año debe ser un número.")
-                    logging.error("Error al buscar por año: el año debe ser un número.")
-                    return
-            else:
-                results = []
+        # Buscar por género
+        books = self.library.buscar_por_genero(query)
+        if books:
+            for b in books:
+                self.display_book(b)
+            logging.info(f"{len(books)} libros encontrados por género: {query}")
+            return
 
-            # Mostrar resultados
-            self.result_text.delete(1.0, tk.END)
-            if results:
-                for book in results:
-                    self.result_text.insert(tk.END, str(book) + "\n")
-                logging.info(f"Búsqueda por {criterion} '{query}' realizada. {len(results)} resultados encontrados.")
-            else:
-                self.result_text.insert(tk.END, "No se encontraron libros.")
-                logging.info(f"Búsqueda por {criterion} '{query}' realizada. No se encontraron resultados.")
+        # Buscar por año
+        try:
+            year = int(query)
+            books = self.library.buscar_por_año(year)
+            if books:
+                for b in books:
+                    self.display_book(b)
+                logging.info(f"{len(books)} libros encontrados por año: {year}")
+                return
+        except ValueError:
+            pass
 
-    def sort_books(self):
-        # Ventana para seleccionar el tipo de ordenamiento
-        sort_window = tk.Toplevel(self.root)
-        sort_window.title("Ordenar Libros")
+        messagebox.showinfo("No Encontrado", "No se encontraron libros con la búsqueda proporcionada.")
+        logging.info(f"Búsqueda sin resultados para: {query}")
 
-        tk.Label(sort_window, text="Seleccione el criterio de ordenamiento:").pack(pady=5)
+    def add_book(self):
+        # Solicitar información del libro al usuario
+        title = simpledialog.askstring("Título", "Ingrese el título del libro:")
+        if not title:
+            return
+        author = simpledialog.askstring("Autor", "Ingrese el autor del libro:")
+        if not author:
+            return
+        genre = simpledialog.askstring("Género", "Ingrese el género del libro:")
+        if not genre:
+            return
+        year = simpledialog.askinteger("Año", "Ingrese el año de publicación:")
+        if not year:
+            return
+        preview = simpledialog.askstring("Vista Previa", "Ingrese una vista previa del libro:")
+        if not preview:
+            return
+        cover = simpledialog.askstring("Portada", "Ingrese la URL de la portada del libro:")
 
-        # Botones para diferentes tipos de ordenamiento
-        tk.Button(sort_window, text="Por Autor", command=lambda: self.perform_sort("autor")).pack(pady=5)
-        tk.Button(sort_window, text="Por Título", command=lambda: self.perform_sort("título")).pack(pady=5)
-        tk.Button(sort_window, text="Por Año", command=lambda: self.perform_sort("año")).pack(pady=5)
+        # Crear y agregar el libro a la biblioteca
+        new_book = Book(cover, title, author, genre, preview, year)
+        self.library.insertar_libro(new_book)
+        messagebox.showinfo("Éxito", f"El libro '{title}' ha sido agregado exitosamente.")
+        logging.info(f"Libro agregado: {title}")
 
-    def perform_sort(self, criterion):
-        if criterion == "autor":
-            self.library.ordenar_por_autor()
-        elif criterion == "título":
-            self.library.ordenar_por_titulo()
-        elif criterion == "año":
-            self.library.ordenar_por_año()
-        # Mostrar libros ordenados
-        self.result_text.delete(1.0, tk.END)
+    def show_books(self):
+        self.results_text.delete(1.0, tk.END)
         for book in self.library.books:
-            self.result_text.insert(tk.END, str(book) + "\n")
-        logging.info(f"Libros ordenados por {criterion}.")
+            self.display_book(book)
+
+    def display_book(self, book):
+        self.results_text.insert(tk.END, str(book) + "\n\n")
 
 class LoginGUI:
     def __init__(self, root, on_login_success):

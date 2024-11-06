@@ -1,77 +1,48 @@
-from graph import Graph
-from nodes import YearNode, GenreNode
+from nodes import HashTable
+from sort import quick_sort
+import logging
 
 class Library:
     def __init__(self):
         self.books = []
-        self.year_tree = None
-        self.genre_root = None
-        self.graph = Graph()
+        self.hash_table_genres = HashTable()
+        self.hash_table_years = HashTable()
+        logging.info('Sistema de Biblioteca iniciado.')
 
     def insertar_libro(self, book):
         self.books.append(book)
-        # Insertar en el árbol de años
-        if self.year_tree is None:
-            self.year_tree = YearNode(book.year)
-            self.year_tree.books.append(book)
-        else:
-            self.year_tree = self.year_tree.insert(book)
-        # Insertar en el árbol de géneros
-        if self.genre_root is None:
-            self.genre_root = GenreNode(book.genre)
-            self.genre_root.add_book(book)
-        else:
-            self.insertar_en_genero(self.genre_root, book)
-        # Agregar al grafo
-        self.graph.add_book(book)
-        print(f"Libro '{book.title}' insertado.")
-
-    def insertar_en_genero(self, nodo_actual, book):
-        if nodo_actual.genre_name == book.genre:
-            nodo_actual.add_book(book)
-        else:
-            # Buscar en subgéneros
-            for subgenero in nodo_actual.subgenres:
-                if subgenero.genre_name == book.genre:
-                    subgenero.add_book(book)
-                    return
-            # Si no se encuentra, agregar como nuevo subgénero
-            nuevo_subgenero = GenreNode(book.genre)
-            nuevo_subgenero.add_book(book)
-            nodo_actual.add_subgenre(nuevo_subgenero)
+        self.hash_table_genres.insert(book.genre.lower(), book)
+        self.hash_table_years.insert(book.year, book)
+        logging.info(f"Libro '{book.title}' insertado en la biblioteca.")
 
     def buscar_por_titulo(self, titulo):
-        resultados = [book for book in self.books if titulo.lower() in book.title.lower()]
-        return resultados
+        for book in self.books:
+            if book.title.lower() == titulo.lower():
+                logging.info(f"Búsqueda por título '{titulo}' realizada. Encontrado.")
+                return book
+        logging.info(f"Búsqueda por título '{titulo}' realizada. No encontrado.")
+        return None
 
     def buscar_por_autor(self, autor):
-        resultados = [book for book in self.books if autor.lower() in book.author.lower()]
-        return resultados
+        for book in self.books:
+            if book.author.lower() == autor.lower():
+                logging.info(f"Búsqueda por autor '{autor}' realizada. Encontrado.")
+                return book
+        logging.info(f"Búsqueda por autor '{autor}' realizada. No encontrado.")
+        return None
 
     def buscar_por_genero(self, genero):
-        resultados = []
-        def buscar_en_genero(nodo):
-            if nodo.genre_name.lower() == genero.lower():
-                resultados.extend(nodo.books)
-            for subgenero in nodo.subgenres:
-                buscar_en_genero(subgenero)
-        if self.genre_root:
-            buscar_en_genero(self.genre_root)
-        return resultados
+        results = self.hash_table_genres.search(genero.lower())
+        logging.info(f"Búsqueda por género '{genero}' realizada. {len(results)} resultados encontrados.")
+        return results
 
     def buscar_por_año(self, año):
-        resultados = []
-        def buscar_en_arbol(nodo):
-            if nodo is None:
-                return
-            if nodo.year == año:
-                resultados.extend(nodo.books)
-            elif año < nodo.year:
-                buscar_en_arbol(nodo.left)
-            else:
-                buscar_en_arbol(nodo.right)
-        buscar_en_arbol(self.year_tree)
-        return resultados
+        results = self.hash_table_years.search(año)
+        logging.info(f"Búsqueda por año '{año}' realizada. {len(results)} resultados encontrados.")
+        return results
+
+    def get_related_books(self, book):
+        return self.graph.get_related_books(book)
 
     def buscar_por_autor_y_año(self, autor, año):
         resultados_por_año = self.buscar_por_año(año)
@@ -114,13 +85,16 @@ class Library:
             print(book)
 
     def ordenar_por_autor(self):
-        self.books = self.quick_sort(self.books, key=lambda book: book.author.lower())
+        self.books = quick_sort(self.books, key=lambda book: book.author.lower())
+        logging.info("Libros ordenados por autor.")
 
     def ordenar_por_titulo(self):
-        self.books = self.quick_sort(self.books, key=lambda book: book.title.lower())
+        self.books = quick_sort(self.books, key=lambda book: book.title.lower())
+        logging.info("Libros ordenados por título.")
 
     def ordenar_por_año(self):
-        self.books = self.quick_sort(self.books, key=lambda book: book.year)
+        self.books = quick_sort(self.books, key=lambda book: book.year)
+        logging.info("Libros ordenados por año.")
 
     def quick_sort(self, books_list, key):
         if len(books_list) <= 1:
@@ -130,3 +104,9 @@ class Library:
             lesser = [book for book in books_list[1:] if key(book) < key(pivot)]
             greater = [book for book in books_list[1:] if key(book) >= key(pivot)]
             return self.quick_sort(lesser, key) + [pivot] + self.quick_sort(greater, key)
+
+    def buscar_por_prefijo_titulo(self, prefix):
+        return self.trie_titles.search(prefix.lower())
+
+    def buscar_por_prefijo_autor(self, prefix):
+        return self.trie_authors.search(prefix.lower())

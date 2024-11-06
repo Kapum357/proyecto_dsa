@@ -8,15 +8,32 @@ class Book:
         self.year = year
 
     def __str__(self):
-        return f"Portada: {self.cover}\nTítulo: {self.title}\nAutor: {self.author}\nGénero: {self.genre}\nAño: {self.year}\nVista previa: {self.preview}\n"
+        return (
+            f"Portada: {self.cover}\n"
+            f"Título: {self.title}\n"
+            f"Autor: {self.author}\n"
+            f"Género: {self.genre}\n"
+            f"Año: {self.year}\n"
+            f"Vista previa: {self.preview}\n"
+        )
 
     def __eq__(self, other):
         return (
             isinstance(other, Book) and
+            self.cover == other.cover and
             self.title == other.title and
             self.author == other.author and
+            self.genre == other.genre and
+            self.preview == other.preview and
             self.year == other.year
         )
 
     def __hash__(self):
-        return hash((self.title, self.author, self.year))
+        return hash((
+            self.cover,
+            self.title,
+            self.author,
+            self.genre,
+            self.preview,
+            self.year
+        ))
