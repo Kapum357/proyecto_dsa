@@ -1,0 +1,49 @@
+2024-11-08 23:16:24,982 - INFO - Buscando libros con el término 'quijote'
+2024-11-08 23:16:26,218 - INFO - Buscando libros con el término 'quijote'
+2024-11-08 23:16:26,372 - INFO - Buscando libros con el término 'quijote'
+2024-11-08 23:16:26,594 - INFO - Buscando libros con el término 'quijote'
+2024-11-08 23:16:33,442 - INFO - Buscando libros con el término 'El'
+2024-11-08 23:16:34,467 - INFO - Buscando libros con el término 'El'
+2024-11-08 23:16:44,555 - INFO - Buscando libros con el término 'El Quijote Miguel de Cervantes'
+2024-11-08 23:16:44,706 - INFO - Buscando libros con el término 'El Quijote Miguel de Cervantes'
+2024-11-08 23:16:44,878 - INFO - Buscando libros con el término 'El Quijote Miguel de Cervantes'
+2024-11-08 23:16:45,100 - INFO - Buscando libros con el término 'El Quijote Miguel de Cervantes'
+2024-11-08 23:16:45,718 - INFO - Buscando libros con el término 'El Quijote Miguel de Cervantes'
+2024-11-08 23:16:45,948 - INFO - Buscando libros con el término 'El Quijote Miguel de Cervantes'
+2024-11-08 23:17:42,095 - INFO - Inicializada la Tabla Hash.
+2024-11-08 23:17:42,095 - INFO - Inicializado el Árbol N-ario para géneros.
+2024-11-08 23:17:42,095 - INFO - Inicializado el B+ Tree para años de publicación.
+2024-11-08 23:17:42,098 - INFO - Inicializado el Grafo de relaciones entre libros.
+2024-11-08 23:17:42,192 - INFO - Agregando libro 'El Quijote' al sistema.
+2024-11-08 23:17:42,193 - INFO - Insertado 'El Quijote' en el Trie.
+2024-11-08 23:17:42,193 - INFO - Insertado 'Miguel de Cervantes' en el Trie.
+2024-11-08 23:17:42,193 - INFO - Insertando libro 'El Quijote' en el árbol por título
+2024-11-08 23:17:42,193 - INFO - Inserting book 'El Quijote' into Red-Black Tree
+2024-11-08 23:17:42,196 - INFO - Insertando libro 'El Quijote' en la Tabla Hash en el índice 27.
+2024-11-08 23:17:42,197 - INFO - Género 'novela' añadido al Árbol N-ario.
+2024-11-08 23:17:42,197 - INFO - Libro 'El Quijote' insertado bajo el género 'novela'.
+2024-11-08 23:17:42,197 - INFO - Insertando libro 'El Quijote' en el B+ Tree bajo el año 1605.
+2024-11-08 23:17:42,200 - INFO - Added book 'El Quijote' to the graph.
+2024-11-08 23:17:42,202 - INFO - Libro 'El Quijote' agregado exitosamente al sistema.
+2024-11-08 23:17:42,204 - INFO - Books sorted by title using Quick Sort.
+2024-11-08 23:17:59,614 - INFO - Buscando libros con el término 'el quijote'
+2024-11-08 23:20:48,485 - INFO - Inicializada la Tabla Hash.
+2024-11-08 23:20:48,485 - INFO - Inicializado el Árbol N-ario para géneros.
+2024-11-08 23:20:48,485 - INFO - Inicializado el B+ Tree para años de publicación.
+2024-11-08 23:20:48,492 - INFO - Inicializado el Grafo de relaciones entre libros.
+2024-11-08 23:20:48,602 - INFO - Agregando libro 'El Quijote' al sistema.
+2024-11-08 23:20:48,602 - INFO - Insertado 'El Quijote' en el Trie.
+2024-11-08 23:20:48,602 - INFO - Insertado 'Miguel de Cervantes' en el Trie.
+2024-11-08 23:20:48,602 - INFO - Insertando libro 'El Quijote' en el árbol por título
+2024-11-08 23:20:48,610 - INFO - Inserting book 'El Quijote' into Red-Black Tree
+2024-11-08 23:20:48,610 - INFO - Insertando libro 'El Quijote' en la Tabla Hash en el índice 90.
+2024-11-08 23:20:48,610 - INFO - Género 'novela' añadido al Árbol N-ario.
+2024-11-08 23:20:48,612 - INFO - Libro 'El Quijote' insertado bajo el género 'novela'.
+2024-11-08 23:20:48,612 - INFO - Insertando libro 'El Quijote' en el B+ Tree bajo el año 1605.
+2024-11-08 23:20:48,616 - INFO - Added book 'El Quijote' to the graph.
+2024-11-08 23:20:48,616 - INFO - Libro 'El Quijote' agregado exitosamente al sistema.
+2024-11-08 23:20:48,616 - INFO - Books sorted by title using Quick Sort.
+2024-11-08 23:20:53,913 - INFO - Buscando libros con el término 'el quijote'
+2024-11-08 23:31:19,223 - INFO - Agregando libro 'El Quijote' al sistema.
+2024-11-08 23:31:19,231 - INFO - Libro 'El Quijote' agregado exitosamente al sistema.
+2024-11-08 23:31:19,233 - INFO - Books sorted by title using Quick Sort.

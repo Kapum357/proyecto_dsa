@@ -1,30 +1,53 @@
-from collections import defaultdict
+import logging
+
+# Configuración del logger
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Implementación del Grafo para relaciones entre libros
+class Edge:
+    def __init__(self, from_book, to_book, relation):
+        self.from_book = from_book
+        self.to_book = to_book
+        self.relation = relation  # e.g., 'same_author', 'same_genre'
 
 class Graph:
     def __init__(self):
-        self.graph = defaultdict(list)
+        self.nodes = {}
+        self.edges = []
+        logger.info("Inicializado el Grafo de relaciones entre libros.")
 
     def add_book(self, book):
-        if book not in self.graph:
-            self.graph[book] = []
+        if book.title not in self.nodes:
+            self.nodes[book.title] = book
+            logger.info(f"Added book '{book.title}' to the graph.")
+        else:
+            logger.warning(f"Book '{book.title}' already exists in the graph.")
 
-    def add_edge(self, book1, book2, relation):
-        self.graph[book1].append((book2, relation))
-        self.graph[book2].append((book1, relation))
+    def connect_books(self, book1_title, book2_title):
+        book1 = self.nodes.get(book1_title)
+        book2 = self.nodes.get(book2_title)
+        if not book1 or not book2:
+            logger.warning("One or both books not found in the graph.")
+            return
 
-    def build_graph(self, books):
-        for book in books:
-            self.add_book(book)
-        for i in range(len(books)):
-            for j in range(i + 1, len(books)):
-                if books[i].author == books[j].author:
-                    self.add_edge(books[i], books[j], 'autor')
-                if books[i].year == books[j].year:
-                    self.add_edge(books[i], books[j], 'año')
-                if books[i].genre == books[j].genre:
-                    self.add_edge(books[i], books[j], 'género')
-                if books[i].title == books[j].title:
-                    self.add_edge(books[i], books[j], 'título')
+        relations = []
+        if book1.author == book2.author:
+            relations.append('same_author')
+        if book1.genre == book2.genre:
+            relations.append('same_genre')
+        if book1.publication_year == book2.publication_year:
+            relations.append('same_publication_year')
 
-    def get_related_books(self, book):
-        return self.graph[book]
+        for relation in relations:
+            edge = Edge(book1, book2, relation)
+            self.edges.append(edge)
+            logger.info(f"Connected '{book1.title}' and '{book2.title}' via '{relation}'.")
+
+    def get_relations(self, book_title):
+        relations = []
+        for edge in self.edges:
+            if edge.from_book.title == book_title or edge.to_book.title == book_title:
+                related_title = edge.to_book.title if edge.from_book.title == book_title else edge.from_book.title
+                relations.append((related_title, edge.relation))
+        return relations
